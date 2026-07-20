@@ -125,7 +125,7 @@ class Checkpoint(Cmd):
       r_sock.sendall(msg_bytes)
 
     logging.info(f"{state.id} sending checkpoint acknowledgement to Coordinator for checkpoint {self.checkpoint_id}")
-    chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id)
+    chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id, recovery_id=state.last_recovery_id)
     state.to_coordinator(chkack_msg)
 
 

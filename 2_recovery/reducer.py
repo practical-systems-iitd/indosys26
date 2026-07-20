@@ -119,7 +119,7 @@ class CPMarker(Cmd):
     # TODO: Fix this
     logging.info(f"Checkpointing reducer {state.id}, chkpt_id={self.checkpoint_id}")
     state.checkpoint(self.checkpoint_id)
-    chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id)
+    chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id, recovery_id=state.last_recovery_id)
     state.to_coordinator(chkack_msg)
 
 
@@ -141,12 +141,12 @@ class WC(Cmd):
     self.count = count
 
   def handle(self, state: ReducerState):
+    # TODO: Fix this
     state.wc[self.word] += self.count
     logging.debug(f"Adding word count {self.word}={self.count}")
 
 class Exit(Cmd):
   def handle(self, state: ReducerState):
-    # TODO: Fix this
     logging.critical(f"{state.id} exiting!")
     state.exit()
 

@@ -119,7 +119,7 @@ class CPMarker(Cmd):
     if self.recovery_id == state.last_recovery_id:
       logging.info(f"Checkpointing reducer {state.id}, chkpt_id={self.checkpoint_id}")
       state.checkpoint(self.checkpoint_id)
-      chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id)
+      chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id, recovery_id=state.last_recovery_id)
       state.to_coordinator(chkack_msg)
     else:
       logging.warning(f"Ignoring message with recovery id {self.recovery_id} since mine is {state.last_recovery_id}")
@@ -239,6 +239,7 @@ class Reducer(Process):
             for i in range(self.num_mappers):
               assert checkpoint_id == self.cp_marker[i], (f"{self.id} received {checkpoint_id} from one side "
                                                           f"and {self.cp_marker[i]} from another!")
+            # time.sleep(0.1)
             cmd_q.put(CPMarker(checkpoint_id=checkpoint_id, recovery_id=recovery_id))
           barrier.wait()
           logging.info(f"-- SYNCHRONISED --")

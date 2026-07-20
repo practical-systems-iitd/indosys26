@@ -26,7 +26,7 @@ class Message:
     # Message("heartbeat", source)
     # Message("checkpoint", source, checkpoint_id, recovery_id)
     # Message("word_count", source, word, count)
-    # Message("checkpoint_ack", source, checkpoint_id)  # checkpoint_id = MAX_CKPT_ID means final checkpoint
+    # Message("checkpoint_ack", source, checkpoint_id, recovery_id)  # checkpoint_id = MAX_CKPT_ID means final checkpoint
     # Message("exit", source = "coordinator")
     # Message("done", source)
     # Message("recover", souce, recovery_id, checkpoint_id)

@@ -86,10 +86,15 @@ class HBRecvMsg(RcvMsg):
     return None
 
 class CpktAckRecvMsg(RcvMsg):
-  def __init__(self, checkpoint_id: str):
+  def __init__(self, checkpoint_id: str, recovery_id: str):
     self.checkpoint_id: Final[int] = int(checkpoint_id)
+    self.recovery_id: Final[int] = int(recovery_id)
 
   def update(self, gs: GlobalState, source: str) -> Optional[PHASE]:
+    if self.recovery_id < gs.next_recovery_id:
+      logging.warning(f"Ignoring CHECKPOINT_ACK from {source} with stale recovery_id={self.recovery_id} (current={gs.next_recovery_id})")
+      return None
+
     if self.checkpoint_id == MAX_CKPT_ID:  # final checkpoint, taken once all mappers are done
       gs.workers[source].last_checkpoint_done = True
       if all(ws.last_checkpoint_done for ws in gs.workers.values()):
@@ -146,7 +151,7 @@ def msg_factory(message: Message) -> RcvMsg:
   if message.msg_type == MT.HEARTBEAT:
     return HBRecvMsg()
   elif message.msg_type == MT.CHECKPOINT_ACK:
-    return CpktAckRecvMsg(message.kwargs["checkpoint_id"])
+    return CpktAckRecvMsg(message.kwargs["checkpoint_id"], message.kwargs["recovery_id"])
   elif message.msg_type == MT.DONE:
     return DoneRecvMsg()
   elif message.msg_type == MT.RECOVERY_ACK:
