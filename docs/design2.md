@@ -26,8 +26,6 @@ checkpointing.
 
 ### The Mapper
 
-![HighLevelDesign](./workers.png)
-
 #### Main tasks:-
 
 1) Each mapper reads a file name from its redis stream, and perform word count
@@ -73,6 +71,7 @@ coordinator.  So the system looks like the following.
 
 
 ## Low level system design
+![HighLevelDesign](./workers.png)
 
 ### Mapper design
 
