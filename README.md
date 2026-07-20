@@ -30,6 +30,28 @@ recover a system after a failure.
 
 ## Getting Started
 
+### Prerequisites
+
+- **Python** 3.10+
+- **Redis** (running locally on the default port `6379`)
+- A Python virtual environment with the project dependencies installed:
+
+  ```bash
+  python -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+  ```
+
+- The shared test dataset. Generate it once at the repo root:
+
+  ```bash
+  python generator.py
+  ```
+
+  This creates `csv_files/` at the root; each assignment directory has a `csv_files` symlink into it, so all four assignments share the same dataset.
+
+### Assignments
+
 1. Start with `1_ckpt` and follow the instructions there to implement
    checkpointing. Compare against `1_ckpt_sol` if you get stuck.
 2. Move on to `2_recovery` to implement failure recovery using the
