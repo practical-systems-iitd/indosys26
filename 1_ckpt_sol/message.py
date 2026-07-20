@@ -8,7 +8,7 @@ class MT(enum.IntEnum):
     CHECKPOINT = 1               # coordinator -> mapper
     FWD_CHECKPOINT = 2           # mapper -> reducer
     WORD_COUNT = 3               # mapper -> reducer
-    CHECKPOINT_ACK = 4           # mapper -> coordinator, reducer -> coordinator (checkpoint_id = 0 means final)
+    CHECKPOINT_ACK = 4           # mapper -> coordinator, reducer -> coordinator (checkpoint_id = MAX_CKPT_ID means final)
     EXIT = 5                     # coordinator -> mapper, coordinator -> reducer
     DONE = 6                     # mapper -> coordinator
 
@@ -24,7 +24,7 @@ class Message:
     # Message("heartbeat", source)
     # Message("checkpoint", source, checkpoint_id)
     # Message("word_count", source, word, count)
-    # Message("checkpoint_ack", source, checkpoint_id)  # checkpoint_id = 0 means final checkpoint
+    # Message("checkpoint_ack", source, checkpoint_id)  # checkpoint_id = MAX_CKPT_ID means final checkpoint
     # Message("exit", source = "coordinator")
     # Message("done", source)
 

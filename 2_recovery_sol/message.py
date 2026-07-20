@@ -8,12 +8,11 @@ class MT(enum.IntEnum):
     CHECKPOINT = 1               # coordinator -> mapper
     FWD_CHECKPOINT = 2           # mapper -> reducer
     WORD_COUNT = 3               # mapper -> reducer
-    CHECKPOINT_ACK = 4           # mapper -> coordinator, reducer -> coordinator
+    CHECKPOINT_ACK = 4           # mapper -> coordinator, reducer -> coordinator (checkpoint_id = MAX_CKPT_ID means final)
     EXIT = 5                     # coordinator -> mapper, coordinator -> reducer
     DONE = 6                     # mapper -> coordinator
-    LAST_CHECKPOINT_ACK = 7      # mapper -> coordinator, reducer -> coordinator
-    RECOVER = 8                  # coordinator -> mapper , coordinator -> reducer
-    RECOVERY_ACK = 9             # mapper -> coordinator, reducer -> coordinator
+    RECOVER = 7                  # coordinator -> mapper , coordinator -> reducer
+    RECOVERY_ACK = 8             # mapper -> coordinator, reducer -> coordinator
 
     @classmethod
     @lru_cache()
@@ -27,10 +26,9 @@ class Message:
     # Message("heartbeat", source)
     # Message("checkpoint", source, checkpoint_id, recovery_id)
     # Message("word_count", source, word, count)
-    # Message("checkpoint_ack", source, checkpoint_id = 0)
+    # Message("checkpoint_ack", source, checkpoint_id)  # checkpoint_id = MAX_CKPT_ID means final checkpoint
     # Message("exit", source = "coordinator")
     # Message("done", source)
-    # Message("last_checkpoint_ack", souce, checkpoint_id)
     # Message("recover", souce, recovery_id, checkpoint_id)
     # Message("recovery_ack", souce, recovery_id)
 

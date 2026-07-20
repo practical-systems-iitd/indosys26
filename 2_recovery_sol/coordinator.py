@@ -90,30 +90,21 @@ class CpktAckRecvMsg(RcvMsg):
     self.checkpoint_id: Final[int] = int(checkpoint_id)
 
   def update(self, gs: GlobalState, source: str) -> Optional[PHASE]:
+    if self.checkpoint_id == MAX_CKPT_ID:  # final checkpoint, taken once all mappers are done
+      gs.workers[source].last_checkpoint_done = True
+      if all(ws.last_checkpoint_done for ws in gs.workers.values()):
+        return PHASE.EXITING
+      return None
+
     gs.workers[source].last_cp_id = self.checkpoint_id
     received_cpack_from_all = True
     for _, ws in gs.workers.items():
       if ws.last_cp_id != gs.next_cp_id:
         received_cpack_from_all = False
-    
+
     if received_cpack_from_all:
       gs.next_cp_id += 1
       return PHASE.CP
-    return None
-
-class LastCkptRecvMsg(RcvMsg):
-  def __init__(self, checkpoint_id: str):
-    assert int(checkpoint_id) == MAX_CKPT_ID
-
-  def update(self, gs: GlobalState, source: str) -> Optional[PHASE]:
-    gs.workers[source].last_checkpoint_done = True
-    last_cp_received_from_all = True
-    for _, ws in gs.workers.items():
-      if ws.last_checkpoint_done == False:
-        last_cp_received_from_all = False
-
-    if last_cp_received_from_all:
-      return PHASE.EXITING
     return None
 
 class RecoveryAckRecvMsg(RcvMsg):
@@ -158,8 +149,6 @@ def msg_factory(message: Message) -> RcvMsg:
     return CpktAckRecvMsg(message.kwargs["checkpoint_id"])
   elif message.msg_type == MT.DONE:
     return DoneRecvMsg()
-  elif message.msg_type == MT.LAST_CHECKPOINT_ACK:
-    return LastCkptRecvMsg(message.kwargs["checkpoint_id"])
   elif message.msg_type == MT.RECOVERY_ACK:
     return RecoveryAckRecvMsg(message.kwargs["recovery_id"])
   else:

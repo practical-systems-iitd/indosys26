@@ -12,7 +12,7 @@ import logging
 import queue
 
 from mapper import Mapper
-from constants import HEARTBEAT_INTERVAL, HEARTBEAT_TIMEOUT, CHECKPOINT_INTERVAL, NUM_MAPPERS, \
+from constants import HEARTBEAT_INTERVAL, HEARTBEAT_TIMEOUT, CHECKPOINT_INTERVAL, MAX_CKPT_ID, NUM_MAPPERS, \
   MAPPER_PORTS, REDUCER_PORTS, COORDINATOR_PORT
 from reducer import Reducer
 from message import Message, MT
@@ -31,7 +31,7 @@ class WorkerState:
     self.last_hb_recvd: int = 0
     self.last_cp_id: int = 0
     self.is_done: bool = False  # only for mappers
-    self.zero_checkpoint_done: bool = False
+    self.last_checkpoint_done: bool = False
     self.process: Process
 
   def start_worker(self) -> None:
@@ -70,9 +70,9 @@ class CpktAckRecvMsg(RcvMsg):
     self.checkpoint_id: Final[int] = int(checkpoint_id)
 
   def update(self, gs: GlobalState, source: str) -> Optional[PHASE]:
-    if self.checkpoint_id == 0:  # final checkpoint, taken once all mappers are done
-      gs.workers[source].zero_checkpoint_done = True
-      if all(ws.zero_checkpoint_done for ws in gs.workers.values()):
+    if self.checkpoint_id == MAX_CKPT_ID:  # final checkpoint, taken once all mappers are done
+      gs.workers[source].last_checkpoint_done = True
+      if all(ws.last_checkpoint_done for ws in gs.workers.values()):
         return PHASE.EXITING
       return None
 
@@ -193,7 +193,7 @@ class SendThread(threading.Thread):
     logging.info(f"{self.id} sending last checkpoint markers")
     for _, ws in self.global_state.workers.items():
       if ws.is_mapper:
-        CPMsg(0).send(self.global_state.sock, ws.addr)
+        CPMsg(MAX_CKPT_ID).send(self.global_state.sock, ws.addr)
 
   def exit_phase(self, start_time):
     assert self.global_state.phase == PHASE.EXITING

@@ -119,11 +119,7 @@ class CPMarker(Cmd):
     if self.recovery_id == state.last_recovery_id:
       logging.info(f"Checkpointing reducer {state.id}, chkpt_id={self.checkpoint_id}")
       state.checkpoint(self.checkpoint_id)
-      if self.checkpoint_id == MAX_CKPT_ID:
-        chkack_msg = Message(msg_type=MT.LAST_CHECKPOINT_ACK, source=state.id,
-                             checkpoint_id=self.checkpoint_id)
-      else:
-        chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id)
+      chkack_msg = Message(msg_type=MT.CHECKPOINT_ACK, source=state.id, checkpoint_id=self.checkpoint_id)
       state.to_coordinator(chkack_msg)
     else:
       logging.warning(f"Ignoring message with recovery id {self.recovery_id} since mine is {state.last_recovery_id}")

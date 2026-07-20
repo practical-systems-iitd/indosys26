@@ -1,16 +1,1 @@
-from typing import Final
-import sys
-
-FNAME: Final[bytes] = b"fname"
-CHECKPOINT_INTERVAL : Final[float] = 0.5
-HEARTBEAT_INTERVAL: Final[float] = 0.5
-HEARTBEAT_TIMEOUT: Final[float] = 1
-NUM_MAPPERS: Final[int] = 2
-NUM_REDUCERS: Final[int] = 2
-STREAMS: Final[list[bytes]] = [f"stream_{i}".encode() for i in range(NUM_MAPPERS)]
-
-COORDINATOR_PORT: Final[int] = 9000
-MAPPER_PORTS: Final[list[int]] = [COORDINATOR_PORT + i + 1 for i in range(NUM_MAPPERS)]
-REDUCER_PORTS: Final[list[int]] = [MAPPER_PORTS[-1] + i + 1 for i in range(NUM_REDUCERS)]
-
-MAX_CKPT_ID: Final[int] = sys.maxsize
+../constants.py

@@ -1,4 +1,6 @@
 import glob
+import os
+import shutil
 
 from constants import STREAMS, NUM_MAPPERS
 from coordinator import Coordinator
@@ -22,7 +24,6 @@ if __name__ == "__main__":
   if os.path.exists(ckpt_dir):
     shutil.rmtree(ckpt_dir)
   os.makedirs(ckpt_dir)
-
 
   C = Coordinator()
   C.start()
