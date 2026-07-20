@@ -1,6 +1,4 @@
-# Lab-2: Lightweight asynchronous consistent checkpointing
-
-Find the deliverables in docs/deliverables.md.
+# Lightweight asynchronous consistent checkpointing
 
 ## High Level System Overview.
 
