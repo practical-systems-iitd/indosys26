@@ -67,7 +67,7 @@ in its redis stream.
 In this assignment we fix the number of mappers and reducers to 2 with 1
 coordinator.  So the system looks like the following.
 
-![HighLevelDesign](docs/lab2_1.png)
+![HighLevelDesign](./lab2_1.png)
 
 
 ## Low level system design
@@ -319,7 +319,7 @@ After sending the messages, the coordinator kills itself.
 
 The above phase diagram is shown below:
 
-![Coordinator's phase machine diagram](docs/state_machine.jpeg)
+![Coordinator's phase machine diagram](./state_machine.jpeg)
 
 
 #### Coordinator state
