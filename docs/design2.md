@@ -26,6 +26,8 @@ checkpointing.
 
 ### The Mapper
 
+![HighLevelDesign](./workers.png)
+
 #### Main tasks:-
 
 1) Each mapper reads a file name from its redis stream, and perform word count
