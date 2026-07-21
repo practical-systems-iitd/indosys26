@@ -84,10 +84,10 @@ class MapperState:
       self.reducer_sockets[i].connect(("localhost", self.reducer_ports[i]))
 
   def word_2_socket(self, word: str) -> socket.socket:
-      if word[0] < 'm': # hashing function
-        return self.reducer_sockets[0]
-      else:
-        return self.reducer_sockets[1]
+    if word[0] == 'a':
+      return self.reducer_sockets[0]
+    else:
+      return self.reducer_sockets[1]
 
   def exit(self):
     for rs in self.reducer_sockets:

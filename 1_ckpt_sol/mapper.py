@@ -61,10 +61,10 @@ class MapperState:
     self.last_cp_id = checkpoint_id
 
   def word_2_socket(self, word: str) -> socket.socket:
-      if word[0] < 'm': # hashing function
-        return self.reducer_sockets[0]
-      else:
-        return self.reducer_sockets[1]
+    if word[0] == 'a':
+      return self.reducer_sockets[0]
+    else:
+      return self.reducer_sockets[1]
 
   def exit(self):
     for rs in self.reducer_sockets:
