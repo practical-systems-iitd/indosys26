@@ -426,3 +426,6 @@ could crash the coordinator.
 
 4. We assume that file system is always available and reliable. Checkpoints
 created in the local file system can be read and written reliably.
+
+
+https://excalidraw.com/#room=e32cd80086b3e71bc65f,09jEpOta9liiJPBMtRu8Mw
