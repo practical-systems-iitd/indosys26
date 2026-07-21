@@ -10,6 +10,7 @@ venv/
 # Editor/OS
 .DS_Store
 *.swp
+.idea
 
 # Lab-generated data & runtime artifacts
 csv_files/

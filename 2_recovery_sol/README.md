@@ -1,5 +1,5 @@
 ## How to run
-1. Complete the setup in the [repo-root README](../README.md#prerequisites) (Redis, Python, venv, requirements, and `python generator.py` to populate the shared `csv_files/` dataset).
+1. Complete the setup in the [repo-root README](../README.md#prerequisites) (Redis, Python, venv, requirements).
 2. `python main.py {none | test_reducer | test_mapper | test_both | test_all}` to run the system.
    - `none` — no crashes.
    - `test_reducer` / `test_mapper` — periodically crash a random reducer / mapper.

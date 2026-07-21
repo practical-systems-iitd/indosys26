@@ -186,8 +186,9 @@ class Reducer(Process):
           logging.info(f"{self.id} has Received MARKER {checkpoint_id} from {message.source}")
           self.cp_marker[mapper_idx] = checkpoint_id
 
-          # TODO: Complete this!!
-          raise NotImplementedError("Not implemented!!!")
+          # TODO: Fix this!!
+          if mapper_idx == 0:  # Only one thread should checkpoint
+            cmd_q.put(CPMarker(checkpoint_id=checkpoint_id))
 
         else:
           assert message.msg_type == MT.WORD_COUNT

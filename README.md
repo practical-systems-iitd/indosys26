@@ -42,13 +42,7 @@ recover a system after a failure.
   pip install -r requirements.txt
   ```
 
-- The shared test dataset. Generate it once at the repo root:
-
-  ```bash
-  python generator.py
-  ```
-
-  This creates `csv_files/` at the root; each assignment directory has a `csv_files` symlink into it, so all four assignments share the same dataset.
+- Each assignment directory has a `file.csv` symlink. So, all four assignments share the same dataset.
 
 ### Assignments
 

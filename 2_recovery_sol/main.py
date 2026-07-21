@@ -22,12 +22,9 @@ if __name__ == "__main__":
 
   Logger()
   rds = MyRedis()
-  pattern = "csv_files/*.csv"
-
-  j: int = 1
-  for file in glob.glob(pattern):
-      rds.add_file(STREAMS[j % NUM_MAPPERS], file, j)
-      j += 1
+  COUNT = 5001
+  for j in range(1, COUNT):
+      rds.add_file(STREAMS[j % NUM_MAPPERS], "file.csv", j)
 
 
   # Kill any process that are using these ports
