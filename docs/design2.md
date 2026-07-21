@@ -228,6 +228,7 @@ To coordinator:
 
 
 ### Coordinator design
+![Coordinator Design](./coordinator.png)
 
 Before explaining coordinator design, we will first explain the checkpointing
 and recovery process that should justify the design of the coordinator.
